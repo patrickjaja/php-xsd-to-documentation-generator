@@ -9,6 +9,9 @@
  - Including one example Theme (see gif)
  
  
+# Live Example to commited Test XSD Files
+![alt tag](theme1.gif)
+ 
 # How to
  - Clone Repo
  - place in your XSD files
@@ -139,6 +142,5 @@ ToDo:
  - Backend is coded in PHP but the framework is not open source (so we need a new backend)
  - structured milestones and task group definitions
  - exclude the project definitions out of gui.load.php to a project config file
+ - get a filehoster for this project to provide a better demo
  
-# Live Example to commited Test XSD Files
-![alt tag](theme1.gif)
