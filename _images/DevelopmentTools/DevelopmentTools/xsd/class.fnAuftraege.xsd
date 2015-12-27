@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="fnAuftraege">
+    <xs:annotation>
+      <xs:documentation xml:lang="de">Hier werden Auftragsinformationen ausgelesen, angelegt, gelöscht oder bearbeitet. ##warn## Alle Anfragen müssen authentifiziert werden, diese Beispiele beziehen sich auf ein speziell vorbereitetes Testsystem. Nähere Informationen befinden sich in der jeweiligen Funktionsbeschreibung.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:all>
+         <xs:element name="load" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation xml:lang="de">Hier können die Auftragsdaten geladen werden. Die Rückgabe enthält die jeweiligen Auftragsstammdaten, Unterpositionen, Kundendaten, Aktivitäten und manuelle Planungen bzw. Tourzurodnungen.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="orderID" minOccurs="1" type="xs:integer">
+                  <xs:annotation>
+                        <xs:documentation xml:lang="de">Dieser Wert muss angegeben werden um einen Auftragsdatensatz zu laden.</xs:documentation>
+                  </xs:annotation>
+              </xs:element>
+            </xs:all>
+          </xs:complexType>
+        </xs:element>
+	<xs:element name="delete" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation xml:lang="de">Hier können die Auftragsdaten gelöscht werden. Dadurch wird in der Datenbank das Feld deleted auf 1 gesetzt.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="orderID" minOccurs="1" type="xs:integer">
+                  <xs:annotation>
+                        <xs:documentation xml:lang="de">Dieser Wert muss angegeben werden um einen Auftragsdatensatz zu löschen.</xs:documentation>
+                  </xs:annotation>
+              </xs:element>
+            </xs:all>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="getOrdersByDate" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation xml:lang="de">Hier können Auftragsdaten zu einem Datum angefordert werden.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="date" minOccurs="1" type="xs:string">
+                  <xs:annotation>
+                        <xs:documentation xml:lang="de">Hier muss ein Datum im Format yyyy-mm-dd oder eine Tagesnummer angegeben werden. Wird eine Tagesnummer angegeben erscheinen alle Aufträge zu dem gewählten Tag innerhalb der aktuellen Woche.</xs:documentation>
+                  </xs:annotation>
+              </xs:element>
+            </xs:all>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="loadOrdersToTour" minOccurs="0" maxOccurs="1" deprecated="1">
+          <xs:annotation>
+            <xs:documentation xml:lang="de">Dieser Webservice liefert alle Auftragsdaten zu einer gewünschten Tour.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="fleetTourID" minOccurs="1" type="xs:integer">
+                  <xs:annotation>
+                        <xs:documentation xml:lang="de">Hier muss die ID der zu ladenden Tour angegeben werden.</xs:documentation>
+                  </xs:annotation>
+              </xs:element>
+            </xs:all>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="getNewOrders" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation xml:lang="de">Dieser Webservice zeigt alle Aufträge an, die noch nicht über orderVerified gekennzeichnet sind, nicht manuell verplant wurden, nicht gelöscht sind, das Auslieferungsdatum leer ist, die nicht den Status S haben und die Auslieferung innerhalb des angegebenen Puffers liegt NEW_ORDERS_DELIVERY_PUFFER.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="getAll" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation xml:lang="de">Hier werden alle Aufträge angezeigt die noch nicht gelöscht wurde, einen Artikel und eine Produktgruppe zugeordnet haben.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="getAllCoded" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation xml:lang="de">Hier werden alle Aufträge angezeigt die bereits gecodiert wurden, einen Artikel und eine Produktgruppe zugeordnet haben und nicht gelöscht sind.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="getNoGeo" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation xml:lang="de">Hier werden alle Aufträge angezeigt die noch nicht gecodiert wurden, einen Artikel und eine Produktgruppe zugeordnet haben, nicht gelöscht sind und deren Abholdatum und Stornodatum leer sind.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="getUnsorted" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation xml:lang="de">Dieser Webservice liefert alle Aufträge zurück die keiner Tour zugeordnet werden können. Dazu zählen auch Aufträge die ein Gebiet haben, aber das Gebiet keine Tour hat. Aufträge die manuell verplant wurden entfallen.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="update" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">Über diesen Webservice können einige Teile des Auftrags geändert werden.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="lat" minOccurs="0" type="xs:string">
+                  <xs:annotation>
+                        <xs:documentation xml:lang="de">Die gewünschten lat/lng Koordinate. Wichtig: Wenn dieser Wert auf 0 steht, kann diese durch den Webservice geoCodeAuftraege automatisch gecodiert werden.</xs:documentation>
+                  </xs:annotation>
+              </xs:element>
+              <xs:element name="lng" minOccurs="0" type="xs:string">
+                  <xs:annotation>
+                        <xs:documentation xml:lang="de">Die gewünschten lat/lng Koordinate. Wichtig: Wenn dieser Wert auf 0 steht, kann diese durch den Webservice geoCodeAuftraege automatisch gecodiert werden.</xs:documentation>
+                  </xs:annotation>
+              </xs:element>
+              <xs:element name="city" minOccurs="0" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Hier wird die Stadt des Auftrags eingetragen.</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="street" minOccurs="0" type="xs:string">
+                  <xs:annotation>
+                        <xs:documentation xml:lang="de">Hier wird die Strasse des Auftrags eingetragen.</xs:documentation>
+                  </xs:annotation>
+              </xs:element>
+              <xs:element name="countryCode" minOccurs="0" type="xs:string">
+                  <xs:annotation>
+                        <xs:documentation xml:lang="de">Hier wird der Ländercode des Auftrags eingetragen.</xs:documentation>
+                  </xs:annotation>
+              </xs:element>
+              <xs:element name="cityDistrict" minOccurs="0" type="xs:string">
+                  <xs:annotation>
+                        <xs:documentation xml:lang="de">Hier wird der Stadtteil des Auftrags eingetragen.</xs:documentation>
+                  </xs:annotation>
+              </xs:element>
+              <xs:element name="houseNumber" minOccurs="0" type="xs:string">
+                  <xs:annotation>
+                        <xs:documentation xml:lang="de">Hier wird die Hausnummer der Straße des Auftrags eingetragen.</xs:documentation>
+                  </xs:annotation>
+              </xs:element>
+              <xs:element name="postCode" minOccurs="0" type="xs:string">
+                  <xs:annotation>
+                        <xs:documentation xml:lang="de">Hier wird die Postleitzahl des Auftrags eingetragen.</xs:documentation>
+                  </xs:annotation>
+              </xs:element>
+              <xs:element name="addr_changed" minOccurs="0" type="xs:string">
+                  <xs:annotation>
+                        <xs:documentation xml:lang="de">Wird die Adresse geändert, kann dieser Wert auf yes gesetzt werden. Dies ist wichtig, wenn trace2 das führende System sein soll.</xs:documentation>
+                  </xs:annotation>
+              </xs:element>
+            </xs:all>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="orderVerified" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation xml:lang="de">Hier kann ein Auftrag als überprüft markiert werden. Danach erscheint er nicht mehr in der Ergebnisliste des Webservices getNewOrders.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="orderID" minOccurs="1" type="xs:integer">
+                  <xs:annotation>
+                        <xs:documentation xml:lang="de">Hier wird die ID des Auftrags erwartet.</xs:documentation>
+                  </xs:annotation>
+              </xs:element>
+            </xs:all>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="search" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation xml:lang="de">Hier kann nach einem Auftrag gesucht werden. Es werden folgende Eigenschaften durchsucht: orderNr, customerID, orderAnnotations, city, cityDistrict, street, orderID, contact, postCode, custAnnotations, matchcode1, matchcode2. Der Auftrag darf nicht den Status S haben oder gelöscht sein.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="q" minOccurs="1" type="xs:string">
+                  <xs:annotation>
+                        <xs:documentation xml:lang="de">Dieser Parameter muss das Suchwort enthalten.</xs:documentation>
+                  </xs:annotation>
+              </xs:element>
+            </xs:all>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="getDistanceToTour">
+          <xs:annotation>
+            <xs:documentation xml:lang="de">Diese Funktion berechnet die Reihenfolge der Aufträge und liefert alle Aufträge zu einer Tour zurück. Wird keine Start/Stop Position angegeben, dann werden die Aufträge unsortiert zurückgeliefert. Die Ergebnisliste ist auf 150 beschränkt.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="start_lat" minOccurs="0" type="xs:string">
+                  <xs:annotation>
+                        <xs:documentation xml:lang="de">Die gewünschte Startposition der Tourberechnung. Mobil ist es die aktuelle Position des Smartphones.</xs:documentation>
+                  </xs:annotation>
+              </xs:element>
+                <xs:element name="start_lng" minOccurs="0" type="xs:string">
+                        <xs:annotation>
+                        <xs:documentation xml:lang="de">Die gewünschte Startposition der Tourberechnung. Mobil ist es die aktuelle Position des Smartphones.</xs:documentation>
+                  </xs:annotation>
+              </xs:element>
+                <xs:element name="stop_lat" minOccurs="0" type="xs:string">
+                        <xs:annotation>
+                        <xs:documentation xml:lang="de">Die gewünschte Endposition der Tourberechnung. Mobil ist es die aktuelle Position des Smartphones.</xs:documentation>
+                  </xs:annotation>
+              </xs:element>
+              <xs:element name="stop_lng" minOccurs="0" type="xs:string">
+                      <xs:annotation>
+                        <xs:documentation xml:lang="de">Die gewünschte Endposition der Tourberechnung. Mobil ist es die aktuelle Position des Smartphones.</xs:documentation>
+                  </xs:annotation>
+              </xs:element>
+              <xs:element name="fleetTourID" minOccurs="1" type="xs:integer">
+                      <xs:annotation>
+                        <xs:documentation xml:lang="de">Hier wird die ID der zu berechnenden Tour angegeben.</xs:documentation>
+                  </xs:annotation>
+              </xs:element>
+            </xs:all>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="distanceArray">
+          <xs:annotation>
+            <xs:documentation xml:lang="de">Diese Funktion berechnet die Reihenfolge der Aufträge zu einer Tour und liefert diese zurück. Wird keine Start/Stop Position angegeben, dann werden die Aufträge unsortiert zurückgeliefert. Die Ergebnisliste ist nicht beschränkt.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="start_lat" minOccurs="0" type="xs:string">
+                  <xs:annotation>
+                        <xs:documentation xml:lang="de">Die gewünschte Startposition der Tourberechnung. Mobil ist es die aktuelle Position des Smartphones.</xs:documentation>
+                  </xs:annotation>
+              </xs:element>
+                <xs:element name="start_lng" minOccurs="0" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="de">Die gewünschte Startposition der Tourberechnung. Mobil ist es die aktuelle Position des Smartphones.</xs:documentation>
+                  </xs:annotation>
+              </xs:element>
+                <xs:element name="stop_lat" minOccurs="0" type="xs:string">
+                        <xs:annotation>
+                        <xs:documentation xml:lang="de">Die gewünschte Endposition der Tourberechnung. Mobil ist es die aktuelle Position des Smartphones.</xs:documentation>
+                  </xs:annotation>
+              </xs:element>
+              <xs:element name="stop_lng" minOccurs="0" type="xs:string">
+                      <xs:annotation>
+                        <xs:documentation xml:lang="de">Die gewünschte Endposition der Tourberechnung. Mobil ist es die aktuelle Position des Smartphones.</xs:documentation>
+                  </xs:annotation>
+              </xs:element>
+              <xs:element name="tour_date" minOccurs="0" type="xs:string">
+                  <xs:annotation>
+                        <xs:documentation xml:lang="de">Das Datum zu dem die Tour berechnet werden soll</xs:documentation>
+                  </xs:annotation>
+              </xs:element>
+              <xs:element name="fleetTourID" minOccurs="1" type="xs:integer">
+                      <xs:annotation>
+                        <xs:documentation xml:lang="de">Hier wird die ID der zu berechnenden Tour angegeben.</xs:documentation>
+                  </xs:annotation>
+              </xs:element>
+            </xs:all>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="deleteDelivery">
+          <xs:annotation>
+            <xs:documentation xml:lang="de">Löscht das Auslieferungsdatum eines Auftrags.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:all>
+                <xs:element name="orderID" minOccurs="1" type="xs:string">
+                    <xs:annotation>
+                      <xs:documentation xml:lang="de">Die ID des Auftrags.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:all>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="saveDelivery">
+          <xs:annotation>
+                <xs:documentation xml:lang="de">Über diesen Webservice lässt sich das Auslieferungsdatum ändern.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="orderID" minOccurs="0" type="xs:string">
+                <xs:annotation>
+                      <xs:documentation xml:lang="de">Die ID des Auftrags.</xs:documentation>
+                </xs:annotation>
+                </xs:element>
+              <xs:element name="deliver" minOccurs="0" type="xs:string">
+                <xs:annotation>
+                      <xs:documentation xml:lang="de">Das neue Auslieferungsdatum im Format yyyy-mm-dd.</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:all>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="savePickup">
+          <xs:annotation>
+                <xs:documentation xml:lang="de">Über diesen Webservice lässt sich das Abholdatum ändern.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="orderID" minOccurs="0" type="xs:string">
+                <xs:annotation>
+                      <xs:documentation xml:lang="de">Die ID des Auftrags.</xs:documentation>
+                </xs:annotation>
+                </xs:element>
+              <xs:element name="pickup" minOccurs="0" type="xs:string">
+                <xs:annotation>
+                      <xs:documentation xml:lang="de">Das neue Abholdatum im Format yyyy-mm-dd.</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:all>
+          </xs:complexType>
+        </xs:element>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
